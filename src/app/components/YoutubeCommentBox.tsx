@@ -8,7 +8,7 @@ import { db } from "@/app/lib/firebase";
 import { v4 as uuidv4 } from "uuid";
 
 import CommentTimeline from "./CommentTimeline";
-import YouTubePlayer from "./YoutubePlayer";
+import YouTubePlayer from "./VideoPlayer";
 import PendingCommentsPanel from "./PendingCommentsPanel";
 import SubmitDialog from "./SubmitDialog";
 import { Draft, Comment } from "@/type/Comment";
