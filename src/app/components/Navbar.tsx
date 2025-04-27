@@ -9,6 +9,7 @@ import { FaVideo } from "react-icons/fa";
 import VideoStack from "@/app/components/VideoSelectPopover";
 import JoinMeeting from "@/app/modals/JoinMeeting";
 import Link from "next/link"; // ✅ Step 1
+import UserNav from "./UserNav";
 
 const CartBadge = styled(Badge)`
   & .${badgeClasses.badge} {
@@ -61,7 +62,7 @@ export default function NavBar() {
           <SignInButton mode="modal" />
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <UserNav />
         </SignedIn>
       </div>
 

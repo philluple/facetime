@@ -31,7 +31,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <StreamVideoProvider>
             <NavBar />
-            {children}
+            <div className="max-w-7xl mx-auto px-6 py-8">{children}</div>
           </StreamVideoProvider>
         </body>
       </html>
