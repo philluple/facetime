@@ -3,13 +3,23 @@ export function applyAudioFilter(microphone: any) {
     const audioContext = new AudioContext();
     const source = audioContext.createMediaStreamSource(inputMediaStream);
 
-    const distortion = audioContext.createWaveShaper();
-    distortion.curve = makeDistortionCurve(400);
-    distortion.oversample = "4x";
+    const delayNode = audioContext.createDelay();
+    delayNode.delayTime.value = 0.01;
+
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = 1.05;
+
+    const biquadFilter = audioContext.createBiquadFilter();
+    biquadFilter.type = "lowshelf";
+    biquadFilter.frequency.value = 300;
+    biquadFilter.gain.value = 15;
 
     const destination = audioContext.createMediaStreamDestination();
-    source.connect(distortion);
-    distortion.connect(destination);
+
+    source.connect(delayNode);
+    delayNode.connect(biquadFilter);
+    biquadFilter.connect(gainNode);
+    gainNode.connect(destination);
 
     return {
       output: destination.stream,
@@ -18,17 +28,4 @@ export function applyAudioFilter(microphone: any) {
       },
     };
   });
-}
-
-function makeDistortionCurve(amount: number) {
-  const n_samples = 44100;
-  const curve = new Float32Array(n_samples);
-  const deg = Math.PI / 180;
-
-  for (let i = 0; i < n_samples; ++i) {
-    const x = (i * 2) / n_samples - 1;
-    curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
-  }
-
-  return curve;
 }

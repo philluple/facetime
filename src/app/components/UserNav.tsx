@@ -1,5 +1,5 @@
 "use client";
-import VideoSettings from "./VideoSettings";
+import VideoSettings from "./VideoPlayer/VideoSettings";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Box } from "@mui/material";
 const DotIcon = () => {

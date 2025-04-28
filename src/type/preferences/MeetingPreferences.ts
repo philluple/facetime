@@ -5,7 +5,6 @@ export type MeetingPreferences = {
   distortVoice: [MeetingType] | "None";
   blurVideo: [MeetingType] | "None";
   cameraOnWhenJoin: [MeetingType] | "None";
-  hideName: [MeetingType] | "None";
   muteOnJoin: [MeetingType] | "None";
 };
 
@@ -17,6 +16,5 @@ export const MeetingPreferenceDisplayNames: Record<
   distortVoice: "Distort Voice",
   blurVideo: "Blur Video",
   cameraOnWhenJoin: "Camera On When Joining",
-  hideName: "Hide Name",
   muteOnJoin: "Mute On Join",
 };

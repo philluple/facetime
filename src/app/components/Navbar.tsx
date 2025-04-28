@@ -6,7 +6,7 @@ import Badge, { badgeClasses } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { FaVideo } from "react-icons/fa";
-import VideoStack from "@/app/components/VideoSelectPopover";
+import VideoStack from "@/app/components/VideoPlayer/VideoSelectPopover";
 import JoinMeeting from "@/app/modals/JoinMeeting";
 import Link from "next/link"; // ✅ Step 1
 import UserNav from "./UserNav";

@@ -5,8 +5,8 @@ import { Comment } from "@/type/Comment";
 import { Stack, Typography, Popover, Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
-import { writeReply } from "../lib/firestore";
-import { formatCommentTime } from "../lib/commentTime";
+import { writeReply } from "../../lib/firestore";
+import { formatCommentTime } from "../../lib/commentTime";
 import { UserResource } from "@clerk/types";
 import DeletePopover from "./DeletePopover";
 type CommentCardProps = {

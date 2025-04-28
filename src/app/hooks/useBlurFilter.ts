@@ -7,67 +7,82 @@ import { useMeetingPreferences } from "../providers/MeetingPreferencesContext";
 export function useBlurFilter() {
   const { useCameraState } = useCallStateHooks();
   const { camera } = useCameraState();
-  const { meetingPrefs, isSettingEnabled } = useMeetingPreferences(); // ✅ Grab meeting preferences from context
+  const { meetingPrefs, isSettingEnabled } = useMeetingPreferences();
+
   useEffect(() => {
-    if (!camera || !isSettingEnabled("blurVideo")) return;
+    if (!camera) return;
 
-    const { unregister } = camera.registerFilter(function blurVideoFilter(
-      inputStream: MediaStream
-    ) {
-      const videoTrack = inputStream.getVideoTracks()[0];
-      const processor = new MediaStreamTrackProcessor({ track: videoTrack });
-      const generator = new MediaStreamTrackGenerator({ kind: "video" });
+    let unregisterFn: (() => void) | null = null;
 
-      const reader = processor.readable.getReader();
-      const writer = generator.writable.getWriter();
+    if (isSettingEnabled("blurVideo")) {
+      const { unregister } = camera.registerFilter(function blurVideoFilter(
+        inputStream: MediaStream
+      ) {
+        const videoTrack = inputStream.getVideoTracks()[0];
+        const processor = new MediaStreamTrackProcessor({ track: videoTrack });
+        const generator = new MediaStreamTrackGenerator({ kind: "video" });
 
-      const processFrame = async () => {
-        const { value: frame, done } = await reader.read();
-        if (done || !frame) {
-          return;
-        }
+        const reader = processor.readable.getReader();
+        const writer = generator.writable.getWriter();
 
-        try {
-          const canvas = new OffscreenCanvas(
-            frame.displayWidth,
-            frame.displayHeight
-          );
-          const ctx = canvas.getContext("2d");
-
-          if (ctx) {
-            ctx.drawImage(frame, 0, 0);
-
-            // Apply blur effect
-            ctx.filter = "blur(10px)"; // You can adjust the blur intensity here
-            ctx.drawImage(canvas, 0, 0);
-
-            const newFrame = new VideoFrame(canvas, {
-              timestamp: frame.timestamp,
-            });
-            await writer.write(newFrame);
-            newFrame.close();
+        const processFrame = async () => {
+          const { value: frame, done } = await reader.read();
+          if (done || !frame) {
+            return;
           }
-        } finally {
-          frame.close(); // Always close the input frame!
-        }
 
-        processFrame(); // Continue processing
-      };
+          try {
+            const canvas = new OffscreenCanvas(
+              frame.displayWidth,
+              frame.displayHeight
+            );
+            const ctx = canvas.getContext("2d");
 
-      processFrame(); // Start processing frames
+            if (ctx) {
+              ctx.drawImage(frame, 0, 0);
 
-      const output = new MediaStream([generator]);
-      return {
-        output,
-        stop: () => {
-          reader.cancel();
-          writer.close();
-        },
-      };
-    });
+              ctx.filter = "blur(10px)";
+              ctx.drawImage(canvas, 0, 0);
+
+              const newFrame = new VideoFrame(canvas, {
+                timestamp: frame.timestamp,
+              });
+              await writer.write(newFrame);
+              newFrame.close();
+            }
+          } finally {
+            frame.close();
+          }
+
+          processFrame();
+        };
+
+        processFrame();
+
+        const output = new MediaStream([generator]);
+        return {
+          output,
+          stop: () => {
+            reader.cancel();
+            writer.close();
+          },
+        };
+      });
+
+      unregisterFn = unregister;
+    }
 
     return () => {
-      unregister();
+      if (unregisterFn) {
+        unregisterFn();
+        console.log("unregistered");
+
+        // Wait a tick before trying to enable camera again
+        setTimeout(() => {
+          camera.enable();
+          console.log("camera enabled after blur removed");
+        }, 200); // 200ms delay is usually plenty
+      }
     };
   }, [camera, meetingPrefs]);
 }

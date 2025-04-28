@@ -1,9 +1,9 @@
 "use client";
 
-import YouTubeCommentBox from "@/app/components/YoutubeCommentBox";
+import YouTubeCommentBox from "@/app/components/VideoPlayer/YoutubeCommentBox";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Video } from "@/app/components/VideoSelectPopover";
+import { Video } from "@/app/components/VideoPlayer/VideoSelectPopover";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 

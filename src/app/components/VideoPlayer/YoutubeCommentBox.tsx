@@ -12,8 +12,8 @@ import YouTubePlayer from "./VideoPlayer";
 import PendingCommentsPanel from "./PendingCommentsPanel";
 import SubmitDialog from "./SubmitDialog";
 import { Draft, Comment } from "@/type/Comment";
-import { generateCommentEmailHTML } from "../lib/generateCommentEmailHTML";
-import { writeComment, writeAnonComment } from "../lib/firestore";
+import { generateCommentEmailHTML } from "../../lib/generateCommentEmailHTML";
+import { writeComment, writeAnonComment } from "../../lib/firestore";
 
 export default function YouTubeCommentBox({
   id,

@@ -21,7 +21,7 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
         name:
           user?.fullName ||
           user?.firstName ||
-          user?.primaryEmailAddress?.emailAddress, // ✅ much better
+          user?.primaryEmailAddress?.emailAddress,
         image: user?.imageUrl,
       },
       tokenProvider,
