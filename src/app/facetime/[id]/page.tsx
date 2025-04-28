@@ -7,6 +7,7 @@ import { useState } from "react";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import MeetingRoom from "@/app/components/MeetingRoom";
 import PreJoinScreen from "@/app/components/PreJoinScreen";
+import { MeetingPreferencesProvider } from "@/app/providers/MeetingPreferencesContext";
 
 export default function FaceTimePage() {
   const { id } = useParams<{ id: string }>();
@@ -26,18 +27,23 @@ export default function FaceTimePage() {
   if (!call) return <p>Call not found</p>;
 
   return (
-    <main className="min-h-screen w-full items-center justify-center">
+    <main className="min-h-screen w-full flex items-center justify-center">
+      {/* ✅ StreamCall handles the call connection */}
       <StreamCall call={call}>
-        <StreamTheme>
-          {hasJoined ? (
-            <MeetingRoom />
-          ) : (
-            <PreJoinScreen
-              onJoin={handleJoin}
-              onCancel={() => router.push("/")}
-            />
-          )}
-        </StreamTheme>
+        {/* ✅ Preferences Provider only scoped to this call */}
+        <MeetingPreferencesProvider>
+          {/* ✅ StreamTheme wraps styling */}
+          <StreamTheme>
+            {hasJoined ? (
+              <MeetingRoom />
+            ) : (
+              <PreJoinScreen
+                onJoin={handleJoin}
+                onCancel={() => router.push("/")}
+              />
+            )}
+          </StreamTheme>
+        </MeetingPreferencesProvider>
       </StreamCall>
     </main>
   );

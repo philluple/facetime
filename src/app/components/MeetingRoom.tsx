@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   PaginatedGridLayout,
@@ -7,15 +7,17 @@ import {
   CallControls,
 } from "@stream-io/video-react-sdk";
 import { useCallStateHooks } from "@stream-io/video-react-sdk";
+import { useMeetingPreferences } from "../providers/MeetingPreferencesContext"; // ✅ use correct import
+import { useInputSettings } from "../hooks/useInputSettings";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 export default function MeetingRoom() {
-  const [layout, setLayout] = useState<CallLayoutType>("grid");
+  const [layout, _] = useState<CallLayoutType>("grid");
   const router = useRouter();
-  const { useCameraState, useMicrophoneState } = useCallStateHooks();
-  const { camera } = useCameraState();
-  const { microphone } = useMicrophoneState();
+  const { meetingPrefs, isSettingEnabled } = useMeetingPreferences();
+
+  useInputSettings(meetingPrefs, isSettingEnabled);
 
   const handleLeave = () => {
     confirm("Are you sure you want to leave the call?") && router.push("/");

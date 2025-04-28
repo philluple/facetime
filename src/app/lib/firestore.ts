@@ -47,8 +47,6 @@ export function writeReply(
   originalComment: Comment,
   videoId: string
 ) {
-  console.log(name);
-  console.log(imgUrl);
   const comment: Comment = {
     reply: originalComment.id,
     id: uuidv4(),
@@ -64,8 +62,6 @@ export function writeReply(
 }
 
 export async function handleDeleteComment(videoId: string, comment: Comment) {
-  console.log(comment.id);
-  console.log(videoId);
   const repliesQuery = query(
     collection(db, "videos", videoId, "comments"),
     where("reply", "==", comment.id)

@@ -106,9 +106,6 @@ const MeetingForm = ({
       setCallDetail(call);
       setFacetimeLink(`${call.id}`);
       setShowMeetingLink(true);
-
-      console.log({ call });
-      console.log("Meeting Created!");
     } catch (error) {
       console.error(error);
       console.error({ title: "Failed to create Meeting" });

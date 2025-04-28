@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useUser } from "@clerk/nextjs";
-import { UserPreferences } from "@/type/preferences/UserPreferences";
-import { defaultPreferences } from "@/type/preferences/dfault";
-
+import { MeetingPreferences } from "@/type/preferences/MeetingPreferences";
+import { defaultMeetingPreferences } from "@/type/preferences/defaultMeetingPreferences";
+import { MeetingType } from "@/type/meeting";
 export function useUserPreferences() {
   const { user } = useUser();
-  const [prefs, setPrefs] = useState<UserPreferences>(defaultPreferences);
+  const [prefs, setPrefs] = useState<MeetingPreferences>(
+    defaultMeetingPreferences
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,10 +25,10 @@ export function useUserPreferences() {
       const snap = await getDoc(ref);
 
       if (snap.exists()) {
-        setPrefs(snap.data().settings);
+        setPrefs(snap.data().settings as MeetingPreferences);
       } else {
-        await setDoc(ref, { settings: defaultPreferences });
-        setPrefs(defaultPreferences);
+        await setDoc(ref, { settings: defaultMeetingPreferences });
+        setPrefs(defaultMeetingPreferences);
       }
 
       setLoading(false);
@@ -35,20 +37,13 @@ export function useUserPreferences() {
     fetchOrCreatePreferences();
   }, [user]);
 
-  const handleChange = <
-    T extends keyof UserPreferences,
-    K extends keyof UserPreferences[T]
-  >(
-    section: T,
-    key: K,
-    value: UserPreferences[T][K]
+  const handleChange = (
+    key: keyof MeetingPreferences,
+    value: MeetingType[] | "None"
   ) => {
     const updated = {
       ...prefs,
-      [section]: {
-        ...prefs[section],
-        [key]: value,
-      },
+      [key]: value,
     };
     setPrefs(updated);
 
@@ -60,6 +55,5 @@ export function useUserPreferences() {
       );
     }
   };
-
   return { prefs, loading, handleChange };
 }
