@@ -4,6 +4,18 @@ import { useEffect } from "react";
 import { useCallStateHooks } from "@stream-io/video-react-sdk";
 import { useMeetingPreferences } from "../providers/MeetingPreferencesContext";
 
+declare class MediaStreamTrackProcessor<T extends MediaStreamTrack> {
+  readonly readable: ReadableStream<any>;
+  constructor(init: { track: T });
+}
+
+declare class MediaStreamTrackGenerator<
+  T extends MediaStreamTrack
+> extends MediaStreamTrack {
+  readonly writable: WritableStream<any>;
+  constructor(init: { kind: "audio" | "video" });
+}
+
 export function useBlurFilter() {
   const { useCameraState } = useCallStateHooks();
   const { camera } = useCameraState();
