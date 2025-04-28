@@ -8,9 +8,10 @@ import { MeetingType } from "@/type/meeting";
 import { useMeetingPreferences } from "../providers/MeetingPreferencesContext"; // ✅ updated
 import { useState, useEffect } from "react";
 import MeetingSettingsToggles from "./MeetingSettingsToggles";
-
+import { MeetingMetaData } from "@/type/preferences/MeetingPreferences";
+import { useUserDetails } from "../hooks/useUserDetails";
 interface PreJoinScreenProps {
-  onJoin: () => void;
+  onJoin: (metadata: MeetingMetaData) => void;
   onCancel: () => void;
 }
 
@@ -31,7 +32,7 @@ export default function PreJoinScreen({
     toggleSetting,
   } = useMeetingPreferences(); // ✅ no arguments now
   const [showPreview, setShowPreview] = useState(true);
-
+  const { details } = useUserDetails();
   const custom = useCallCustomData();
   const meetingType = custom?.meetingType as MeetingType | undefined;
 
@@ -91,7 +92,29 @@ export default function PreJoinScreen({
       {/* Join Buttons */}
       <div className="flex gap-5 mt-5">
         <button
-          onClick={onJoin}
+          onClick={() => {
+            const metadata: MeetingMetaData = {
+              instagram:
+                isSettingEnabled("showInstagram") && details.instagram
+                  ? details.instagram
+                  : null,
+              linkedin:
+                isSettingEnabled("showLinkedin") && details.linkedin
+                  ? details.linkedin
+                  : null,
+              pronouns:
+                isSettingEnabled("showPronoun") && details.pronouns
+                  ? details.pronouns
+                  : null,
+              github:
+                isSettingEnabled("showGitHub") && details.github
+                  ? details.github
+                  : null,
+              bio:
+                isSettingEnabled("showBio") && details.bio ? details.bio : null,
+            };
+            onJoin(metadata);
+          }}
           className="px-4 py-3 bg-green-600 text-green-50 rounded"
         >
           Join

@@ -15,7 +15,6 @@ import { Call } from "@stream-io/video-react-sdk";
 import Link from "next/link";
 import MeetingTypeSelector from "../components/ChooseMeetingType";
 import { MeetingType } from "@/type/meeting";
-
 interface Props {
   enable: boolean;
   setEnable: Dispatch<SetStateAction<boolean>>;
@@ -86,7 +85,6 @@ const MeetingForm = ({
 }) => {
   const [description, setDescription] = useState<string>("");
   const [meetingType, setMeetingType] = useState<MeetingType>("1-on-1");
-
   const handleStartMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
