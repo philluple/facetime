@@ -2,6 +2,8 @@
 import VideoSettings from "./VideoPlayer/VideoSettings";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Box } from "@mui/material";
+import AboutYou from "./AboutYou";
+
 const DotIcon = () => {
   return (
     <img
@@ -31,6 +33,18 @@ export default function UserNav() {
                 <h1>Adjust Meeting Settings</h1>
               </Box>
               <VideoSettings></VideoSettings>
+            </div>
+          </UserButton.UserProfilePage>
+          <UserButton.UserProfilePage
+            label="About You"
+            labelIcon={<DotIcon />}
+            url="about-you"
+          >
+            <div>
+              <Box fontWeight={"bold"}>
+                <h1>Build your profile!</h1>
+              </Box>
+              <AboutYou></AboutYou>
             </div>
           </UserButton.UserProfilePage>
         </UserButton>

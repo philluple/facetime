@@ -6,15 +6,14 @@ import {
 } from "@/type/preferences/MeetingPreferences";
 import { MeetingType } from "@/type/meeting";
 
-import { useTheme } from "@mui/material/styles";
 import {
   Box,
-  Chip,
   FormControl,
   InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
+  Typography,
 } from "@mui/material";
 
 interface PreferencesFormProps {
@@ -34,9 +33,10 @@ const MenuProps = {
       width: 250,
     },
   },
+  disablePortal: true,
 };
 
-// Your possible meeting types
+// All possible meeting types for selection
 const meetingTypes: MeetingType[] = [
   "casual",
   "group",
@@ -49,13 +49,11 @@ export default function PreferencesForm({
   prefs,
   handleChange,
 }: PreferencesFormProps) {
-  const theme = useTheme();
-
   return (
     <main className="p-6 max-w-2xl mx-auto">
       {Object.entries(prefs).map(([key, value]) => (
         <div key={key} className="mb-6">
-          <FormControl sx={{ width: "100%" }}>
+          <FormControl fullWidth>
             <InputLabel id={`${key}-label`}>
               {MeetingPreferenceDisplayNames[key as keyof MeetingPreferences]}
             </InputLabel>
@@ -65,12 +63,9 @@ export default function PreferencesForm({
               value={value === "None" ? [] : (value as MeetingType[])}
               onChange={(e) => {
                 const selected = e.target.value as string[];
-
                 if (selected.includes("None")) {
-                  // If "None" is selected, clear all others
                   handleChange(key as keyof MeetingPreferences, "None");
                 } else {
-                  // Otherwise, save the selected types
                   handleChange(
                     key as keyof MeetingPreferences,
                     selected as MeetingType[]
@@ -89,36 +84,24 @@ export default function PreferencesForm({
               renderValue={(selected) => {
                 if (!selected.length) {
                   return (
-                    <Chip
-                      label="None"
-                      sx={{
-                        fontSize: "0.75rem",
-                        backgroundColor: "#f0f0f0",
-                        color: "#555",
-                      }}
-                    />
+                    <Typography variant="body2" color="text.secondary">
+                      None
+                    </Typography>
                   );
                 }
 
                 return (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((val) => (
-                      <Chip
-                        key={val}
-                        label={
-                          <span className="text-sm">
-                            {val.charAt(0).toUpperCase() + val.slice(1)}
-                          </span>
-                        }
-                      />
+                  <Box>
+                    {selected.map((val, idx) => (
+                      <span key={val} className="text-sm">
+                        {val.charAt(0).toUpperCase() + val.slice(1)}
+                        {idx < selected.length - 1 && ", "}
+                      </span>
                     ))}
                   </Box>
                 );
               }}
-              MenuProps={{
-                ...MenuProps,
-                disablePortal: true, // ✅ <- Add this
-              }}
+              MenuProps={MenuProps}
             >
               <MenuItem value="None">
                 <span className="text-sm">None</span>
@@ -126,7 +109,6 @@ export default function PreferencesForm({
               {meetingTypes.map((type) => (
                 <MenuItem key={type} value={type}>
                   <span className="text-sm">
-                    {" "}
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </span>
                 </MenuItem>

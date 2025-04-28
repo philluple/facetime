@@ -6,6 +6,11 @@ export type MeetingPreferences = {
   blurVideo: [MeetingType] | "None";
   cameraOnWhenJoin: [MeetingType] | "None";
   muteOnJoin: [MeetingType] | "None";
+  showBio: [MeetingType] | "None";
+  showInstagram: [MeetingType] | "None";
+  showGitHub: [MeetingType] | "None";
+  showLinkedin: [MeetingType] | "None";
+  showPronoun: [MeetingType] | "None";
 };
 
 export const MeetingPreferenceDisplayNames: Record<
@@ -17,4 +22,9 @@ export const MeetingPreferenceDisplayNames: Record<
   blurVideo: "Blur Video",
   cameraOnWhenJoin: "Camera On When Joining",
   muteOnJoin: "Mute On Join",
+  showBio: "Display bio",
+  showInstagram: "Display Instagram",
+  showGitHub: "Display GitHub",
+  showLinkedin: "Display Linkedin",
+  showPronoun: "Display Pronouns",
 };

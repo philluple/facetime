@@ -9,6 +9,7 @@ import {
 import { useCallStateHooks } from "@stream-io/video-react-sdk";
 import { useMeetingPreferences } from "../providers/MeetingPreferencesContext"; // ✅ use correct import
 import { useInputSettings } from "../hooks/useInputSettings";
+import { CustomCallLayout } from "./CustomCallLayout";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -23,22 +24,11 @@ export default function MeetingRoom() {
     confirm("Are you sure you want to leave the call?") && router.push("/");
   };
 
-  const CallLayout = () => {
-    switch (layout) {
-      case "grid":
-        return <PaginatedGridLayout />;
-      case "speaker-right":
-        return <SpeakerLayout participantsBarPosition="left" />;
-      default:
-        return <SpeakerLayout participantsBarPosition="right" />;
-    }
-  };
-
   return (
     <section className="relative min-h-screen w-full overflow-hidden pt-4">
       <div className="relative flex size-full items-center justify-center">
         <div className="flex size-full max-w-[1000px] items-center">
-          <CallLayout />
+          <CustomCallLayout></CustomCallLayout>
         </div>
         <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
           <CallControls onLeave={handleLeave} />
