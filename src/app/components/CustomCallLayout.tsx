@@ -1,6 +1,7 @@
 import { useCallStateHooks, ParticipantView } from "@stream-io/video-react-sdk";
 import { ParticipantDetails } from "./ParticipantDetails";
 import { Box } from "@mui/material";
+import { MeetingMetaData } from "@/type/preferences/MeetingPreferences";
 
 export const CustomCallLayout = () => {
   const { useParticipants, useCallMembers } = useCallStateHooks();
@@ -11,6 +12,7 @@ export const CustomCallLayout = () => {
     <div className="flex flex-wrap gap-6 justify-center p-6">
       {participants.map((participant) => {
         const member = members.find((m) => m.user_id === participant.userId);
+        const metdata = member?.custom as MeetingMetaData | undefined;
         return (
           <Box
             key={participant.sessionId}
@@ -20,9 +22,9 @@ export const CustomCallLayout = () => {
             <Box className="bg-black" style={{ aspectRatio: "16 / 9" }}>
               <ParticipantView participant={participant} />
             </Box>
-
-            {/* ✅ Now passing participant AND their matching member */}
-            {member && <ParticipantDetails member={member} />}
+            {member && (
+              <ParticipantDetails uid={member.user_id} metadata={metdata} />
+            )}
           </Box>
         );
       })}
