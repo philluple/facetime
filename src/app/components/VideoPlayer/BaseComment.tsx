@@ -1,7 +1,7 @@
 // app/components/CommentItem.tsx
 import { ReactNode } from "react";
 import { Draft } from "@/type/Comment";
-import { formatCommentTime } from "../lib/commentTime";
+import { formatCommentTime } from "../../lib/commentTime";
 
 type BaseCommentProps = {
   draft: Draft;

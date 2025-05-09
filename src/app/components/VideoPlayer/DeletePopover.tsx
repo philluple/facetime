@@ -3,8 +3,8 @@
 import { Comment } from "@/type/Comment";
 import { Avatar, Stack, Typography, Button, Divider } from "@mui/material";
 import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
-import { formatCommentTime } from "../lib/commentTime";
-import { handleDeleteComment } from "../lib/firestore";
+import { formatCommentTime } from "../../lib/commentTime";
+import { handleDeleteComment } from "../../lib/firestore";
 
 type DeletePopoverProps = {
   comment: Comment;

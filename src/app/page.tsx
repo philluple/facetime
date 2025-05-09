@@ -1,19 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaLink, FaVideo } from "react-icons/fa";
 import Image from "next/image";
 import InstantMeeting from "@/app/modals/InstantMeeting";
 import UpcomingMeeting from "@/app/modals/UpcomingMeeting";
 import CreateLink from "@/app/modals/CreateLink";
 import JoinMeeting from "@/app/modals/JoinMeeting";
+import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk"; // <-- new import
 
 export default function Dashboard() {
-  const [startInstantMeeting, setStartInstantMeeting] =
-    useState<boolean>(false);
   const [joinMeeting, setJoinMeeting] = useState<boolean>(false);
   const [showUpcomingMeetings, setShowUpcomingMeetings] =
     useState<boolean>(false);
   const [showCreateLink, setShowCreateLink] = useState<boolean>(false);
+  const [startInstantMeeting, setStartInstantMeeting] =
+    useState<boolean>(false);
+  const [call, setCall] = useState<Call | null>(null); // <-- new state
+  const client = useStreamVideoClient(); // <-- needed to create the call
+
+  useEffect(() => {
+    if (startInstantMeeting && client && !call) {
+      const id = crypto.randomUUID();
+      const newCall = client.call("default", id);
+      setCall(newCall); // <-- create the call as soon as modal opens
+    }
+  }, [startInstantMeeting, client, call]);
 
   return (
     <>
@@ -62,10 +73,11 @@ export default function Dashboard() {
         </div>
       </main>
 
-      {startInstantMeeting && (
+      {startInstantMeeting && call && (
         <InstantMeeting
           enable={startInstantMeeting}
           setEnable={setStartInstantMeeting}
+          call={call} // <-- pass the created call down
         />
       )}
       {showUpcomingMeetings && (

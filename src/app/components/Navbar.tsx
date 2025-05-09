@@ -6,9 +6,10 @@ import Badge, { badgeClasses } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { FaVideo } from "react-icons/fa";
-import VideoStack from "@/app/components/VideoSelectPopover";
+import VideoStack from "@/app/components/VideoPlayer/VideoSelectPopover";
 import JoinMeeting from "@/app/modals/JoinMeeting";
-import Link from "next/link"; // ✅ Step 1
+import Link from "next/link";
+import UserNav from "./UserNav";
 
 const CartBadge = styled(Badge)`
   & .${badgeClasses.badge} {
@@ -39,15 +40,12 @@ export default function NavBar() {
         </span>
       </Link>
 
-      {/* RIGHT: All actions */}
       <div className="flex items-center gap-4">
-        {/* Notification icon */}
         <IconButton onClick={handleClick}>
           <NotificationsIcon />
           <CartBadge badgeContent={2} color="warning" overlap="circular" />
         </IconButton>
 
-        {/* Join button */}
         <button
           className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-md shadow-sm flex items-center gap-2 transition-all duration-150"
           onClick={() => setJoinMeeting(true)}
@@ -56,13 +54,7 @@ export default function NavBar() {
           Join FaceTime
         </button>
 
-        {/* Auth buttons */}
-        <SignedOut>
-          <SignInButton mode="modal" />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+        <UserNav></UserNav>
       </div>
 
       {/* Popover */}

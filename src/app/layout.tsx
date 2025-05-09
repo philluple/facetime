@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import { Inclusive_Sans } from "next/font/google";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -31,7 +25,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <StreamVideoProvider>
             <NavBar />
-            {children}
+            <div className="max-w-7xl mx-auto px-6 py-8">{children}</div>
           </StreamVideoProvider>
         </body>
       </html>
